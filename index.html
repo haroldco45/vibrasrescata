@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibras Rescata - Caucasia</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffcc00">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -30,49 +32,53 @@
     </section>
 
     <div class="flex overflow-x-auto p-4 space-x-4 no-scrollbar">
-        <button onclick="filter('Todos')" class="bg-black text-white px-4 py-2 rounded-full whitespace-nowrap">Todos</button>
-        <button onclick="filter('Panaderías')" class="bg-white border px-4 py-2 rounded-full whitespace-nowrap">Panaderías</button>
-        <button onclick="filter('Frutas')" class="bg-white border px-4 py-2 rounded-full whitespace-nowrap">Frutas/Verduras</button>
+        <button onclick="renderPacks('Todos')" class="bg-black text-white px-4 py-2 rounded-full whitespace-nowrap shadow-md">Todos</button>
+        <button onclick="renderPacks('Panaderías')" class="bg-white border px-4 py-2 rounded-full whitespace-nowrap shadow-sm">Panaderías</button>
+        <button onclick="renderPacks('Frutas')" class="bg-white border px-4 py-2 rounded-full whitespace-nowrap shadow-sm">Frutas/Verduras</button>
     </div>
 
     <main id="container-packs" class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         </main>
 
-    <nav class="fixed bottom-0 w-full bg-white border-t flex justify-around p-3 text-gray-500">
+    <nav class="fixed bottom-0 w-full bg-white border-t flex justify-around p-3 text-gray-400 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         <a href="#" class="text-vibras text-center"><i class="fas fa-store block text-xl"></i><span class="text-[10px]">Tiendas</span></a>
         <a href="#" class="text-center"><i class="fas fa-heart block text-xl"></i><span class="text-[10px]">Favoritos</span></a>
         <a href="#" class="text-center"><i class="fas fa-user block text-xl"></i><span class="text-[10px]">Mi Perfil</span></a>
     </nav>
 
     <script>
-        // Configuración de los productos disponibles
+        // BASE DE DATOS LOCAL (Aquí gestionas tus aliados de Caucasia)
         const packs = [
             {
                 negocio: "Panadería La Mejor",
+                categoria: "Panaderías",
                 descripcion: "Pack de panes variados y buñuelos",
                 precioOriginal: "30.000",
                 precioOferta: "12.000",
                 horario: "5pm - 7pm",
                 stock: 3,
                 imagen: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80",
-                whatsapp: "573117700431" // Reemplaza con el número real
+                whatsapp: "573001234567" // Cambia por el número real
             },
             {
                 negocio: "Fruber El Campo",
+                categoria: "Frutas",
                 descripcion: "Bolsa sorpresa de frutas frescas",
                 precioOriginal: "25.000",
                 precioOferta: "10.000",
                 horario: "4pm - 6pm",
                 stock: 5,
                 imagen: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80",
-                whatsapp: "573117700431"
+                whatsapp: "573001234567"
             }
         ];
 
-        function renderPacks() {
+        function renderPacks(filtro = 'Todos') {
             const container = document.getElementById('container-packs');
-            container.innerHTML = packs.map(pack => `
-                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+            const filtrados = filtro === 'Todos' ? packs : packs.filter(p => p.categoria === filtro);
+            
+            container.innerHTML = filtrados.map(pack => `
+                <div class="bg-white rounded-xl shadow-sm border overflow-hidden transition-transform active:scale-95">
                     <img src="${pack.imagen}" class="w-full h-40 object-cover">
                     <div class="p-4">
                         <div class="flex justify-between items-start">
@@ -83,13 +89,13 @@
                             </div>
                             <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Quedan ${pack.stock}</span>
                         </div>
-                        <div class="mt-4 flex justify-between items-center">
+                        <div class="mt-4 flex justify-between items-center border-t pt-3">
                             <div>
                                 <span class="text-gray-400 line-through text-sm">$${pack.precioOriginal}</span>
                                 <span class="text-xl font-bold text-red-600 ml-2">$${pack.precioOferta}</span>
                             </div>
-                            <button onclick="order('${pack.negocio}', '${pack.whatsapp}')" class="bg-black text-white px-4 py-2 rounded-lg font-bold hover:bg-vibras hover:text-black transition">
-                                Rescatar
+                            <button onclick="order('${pack.negocio}', '${pack.whatsapp}')" class="bg-black text-white px-4 py-2 rounded-lg font-bold active:bg-vibras transition">
+                                <i class="fab fa-whatsapp mr-1"></i> Rescatar
                             </button>
                         </div>
                     </div>
@@ -102,7 +108,6 @@
             window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
         }
 
-        // Cargar productos al iniciar
         renderPacks();
     </script>
 </body>
