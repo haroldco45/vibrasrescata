@@ -1,0 +1,15 @@
+{
+  "name": "Vibras Rescata",
+  "short_name": "VibrasRescata",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffcc00",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2331/2331901.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
